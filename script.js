@@ -1,9 +1,13 @@
-import * as THREE from 'three'; 
+import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
 
+// Create a scene
 const scene = new THREE.Scene();
+
+// Create a camera
 const camera = new THREE.Camera();
 scene.add(camera);
 
+// Create a renderer
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -11,16 +15,21 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 
-// Add lights
+// Add ambient light
 const ambientLight = new THREE.AmbientLight(0x404040);
 scene.add(ambientLight);
 
+// Add directional light
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 directionalLight.position.set(2, 5, 5);
 directionalLight.castShadow = true;
 scene.add(directionalLight);
 
-// Set up AR.js
+// Create a marker root
+const markerRoot = new THREE.Group();
+scene.add(markerRoot);
+
+// Add AR.js marker controls
 const arToolkitSource = new THREEx.ArToolkitSource({
     sourceType: 'webcam'
 });
@@ -52,15 +61,11 @@ arToolkitContext.init(() => {
     camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
 });
 
-const markerRoot = new THREE.Group();
-scene.add(markerRoot);
-
 const markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
     type: 'pattern',
     patternUrl: 'https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@master/three.js/data/patt.hiro',
 });
 
-// Create the cube
 const geometry = new THREE.BoxGeometry();
 const material = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
 const cube = new THREE.Mesh(geometry, material);
