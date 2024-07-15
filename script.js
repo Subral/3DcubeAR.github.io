@@ -63,7 +63,7 @@ arToolkitContext.init(() => {
 
 const markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot, {
     type: 'pattern',
-    patternUrl: 'https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@master/three.js/data/patt.hiro',
+    patternUrl: 'https://upload.wikimedia.org/wikipedia/commons/4/48/Hiro_marker_ARjs.png',
 });
 
 const geometry = new THREE.BoxGeometry();
