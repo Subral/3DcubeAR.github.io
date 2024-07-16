@@ -5,9 +5,6 @@ window.onload = function () {
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     document.body.appendChild(renderer.domElement);
 
     const ambientLight = new THREE.AmbientLight(0x404040);
@@ -43,8 +40,8 @@ window.onload = function () {
         cameraParametersUrl: 'https://rawcdn.githack.com/AR-js-org/AR.js/master/data/data/camera_para.dat',
         detectionMode: 'mono',
         maxDetectionRate: 30,
-        canvasWidth: 640,
-        canvasHeight: 480,
+        canvasWidth: window.innerWidth,
+        canvasHeight: window.innerHeight,
     });
 
     arToolkitContext.init(function onCompleted() {
@@ -56,9 +53,10 @@ window.onload = function () {
         patternUrl: 'https://rawcdn.githack.com/AR-js-org/AR.js/master/data/data/patt.hiro',
     });
 
-    const geometry = new THREE.BoxGeometry();
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
     const cube = new THREE.Mesh(geometry, material);
+    cube.scale.set(2, 2, 2); 
     cube.castShadow = true;
     cube.receiveShadow = true;
     markerRoot.add(cube);
@@ -71,9 +69,9 @@ window.onload = function () {
     function animate() {
         requestAnimationFrame(animate);
 
-        if (arToolkitSource.ready !== false) {
-            arToolkitContext.update(arToolkitSource.domElement);
-        }
+            if (arToolkitSource.ready !== false) {
+                arToolkitContext.update(arToolkitSource.domElement);
+            }
 
         cube.rotation.x += 0.01;
         cube.rotation.y += 0.01;
